@@ -1,0 +1,338 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Nature & Nurture | Southern Maryland SING"
+  description="Nature & Nurture is a Southern Maryland Spirituality in Nature Group (SING) rooted in the Chesapeake Bay watershed and Calvert Cliffs region."
+>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div>
+        <p class="eyebrow">Nature & Nurture</p>
+        <p class="tagline">A Spirituality in Nature Group (SING)</p>
+      </div>
+      <nav aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="#welcome">Welcome</a></li>
+          <li><a href="#about-place">About the Place</a></li>
+          <li><a href="#gatherings">Gatherings</a></li>
+          <li><a href="#connect">Connect</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section id="welcome" class="section hero">
+      <div class="container">
+        <div class="surface hero-card">
+          <h1>Welcome to Nature & Nurture</h1>
+          <p>
+            We gather to reconnect with the sacred through sky, shoreline, forest, and one another —
+            honoring wonder, reflection, and belonging in the natural world.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about-place" class="section">
+      <div class="container">
+        <h2>Southern Maryland: Our Shared Place</h2>
+        <div class="place-grid">
+          <article class="surface card">
+            <h3>Geography & Geology</h3>
+            <p>
+              Our community sits where the Patuxent River meets the greater Chesapeake Bay watershed,
+              near Lusby and the dramatic Calvert Cliffs. These Miocene-era formations hold millions of
+              years of coastal history in layered sands, clays, and marine fossils.
+            </p>
+          </article>
+          <article class="surface card">
+            <h3>Flora & Fauna</h3>
+            <p>
+              Coastal oak-pine forests, mountain laurel, and marsh edges shape this landscape. Bald
+              eagles soar above creeks and coves, while fish, crabs, and other marine life sustain the
+              estuary’s living web.
+            </p>
+          </article>
+          <article class="surface card">
+            <h3>Indigenous Heritage</h3>
+            <p>
+              Placeholder for honoring the original peoples of this land, including the Piscataway Conoy
+              and related Chesapeake region lineages, while acknowledging and uplifting existing tribal
+              communities today.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="gatherings" class="section gatherings">
+      <div class="container">
+        <h2>Gatherings & Calendar</h2>
+        <div class="surface iframe-card">
+          <p>
+            Upcoming gatherings will appear below. Replace this iframe source with your Google Calendar
+            embed URL or local schedule feed.
+          </p>
+          <iframe
+            title="Nature & Nurture Calendar Placeholder"
+            src="about:blank"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="connect" class="section">
+      <div class="container">
+        <h2>Community Engagement</h2>
+        <div class="forms-grid">
+          <article class="surface card">
+            <h3>Send us a Message</h3>
+            <form id="contact-form" novalidate>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" required />
+
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+
+              <button class="button" type="submit">Send Message</button>
+              <p id="form-status" role="status" aria-live="polite"></p>
+            </form>
+          </article>
+
+          <article class="surface card">
+            <h3>Newsletter Sign-up</h3>
+            <form class="newsletter-form" action="#" method="post">
+              <label for="newsletter-email">Email Address</label>
+              <div class="newsletter-row">
+                <input id="newsletter-email" name="newsletter-email" type="email" required />
+                <button class="button" type="submit">Subscribe</button>
+              </div>
+            </form>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <p>© {new Date().getFullYear()} Nature & Nurture.</p>
+      <p>Lusby & the Southern Maryland coast, rooted in the Chesapeake watershed.</p>
+      <p>Proudly part of the nationwide Spirituality in Nature Group (SING) movement.</p>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.querySelector('#contact-form');
+    const status = document.querySelector('#form-status');
+
+    if (form instanceof HTMLFormElement && status instanceof HTMLElement) {
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+          status.textContent = 'Please complete all required fields before sending.';
+          status.dataset.state = 'error';
+          form.reportValidity();
+          return;
+        }
+
+        const button = form.querySelector('button[type="submit"]');
+        if (button instanceof HTMLButtonElement) {
+          button.disabled = true;
+          button.textContent = 'Sending...';
+        }
+
+        status.textContent = 'Thanks for reaching out. Your message is ready to be sent.';
+        status.dataset.state = 'success';
+
+        window.setTimeout(() => {
+          if (button instanceof HTMLButtonElement) {
+            button.disabled = false;
+            button.textContent = 'Send Message';
+          }
+        }, 700);
+      });
+    }
+  </script>
+</Layout>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    backdrop-filter: blur(6px);
+    background: color-mix(in oklab, var(--color-bg-alt) 82%, white);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
+  }
+
+  .nav-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    flex-wrap: wrap;
+  }
+
+  .eyebrow {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .tagline {
+    margin: 0.2rem 0 0;
+    color: color-mix(in oklab, var(--color-text) 80%, var(--color-primary));
+  }
+
+  .nav-list {
+    list-style: none;
+    display: flex;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  .nav-list a {
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.3rem 0.55rem;
+    border-radius: 0.35rem;
+  }
+
+  .nav-list a:hover,
+  .nav-list a:focus-visible {
+    background: color-mix(in oklab, var(--color-accent) 42%, white);
+  }
+
+  .hero-card {
+    padding: clamp(1.5rem, 3vw, 2.4rem);
+    border-left: 6px solid var(--color-accent);
+  }
+
+  .hero-card p {
+    max-width: 62ch;
+    margin-bottom: 0;
+  }
+
+  .place-grid,
+  .forms-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    margin-top: 1.2rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+  }
+
+  .gatherings {
+    background: color-mix(in oklab, var(--color-bg-alt) 68%, white);
+  }
+
+  .iframe-card {
+    padding: 1.2rem;
+  }
+
+  iframe {
+    width: 100%;
+    min-height: 340px;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
+    border-radius: 0.6rem;
+    background: var(--color-surface);
+  }
+
+  form {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 24%, white);
+    padding: 0.65rem 0.75rem;
+    font: inherit;
+    background: #fff;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: 2px solid color-mix(in oklab, var(--color-accent) 75%, white);
+    outline-offset: 1px;
+  }
+
+  #form-status {
+    min-height: 1.2em;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  #form-status[data-state='error'] {
+    color: #8b2f2f;
+  }
+
+  #form-status[data-state='success'] {
+    color: var(--color-primary);
+  }
+
+  .newsletter-row {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .site-footer {
+    border-top: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
+    background: color-mix(in oklab, var(--color-bg) 78%, white);
+    padding: 1.3rem 0 1.6rem;
+  }
+
+  .footer-wrap {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .footer-wrap p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    .section {
+      padding: 3rem 0;
+    }
+
+    .eyebrow {
+      font-size: 1.1rem;
+    }
+
+    .nav-list {
+      gap: 0.4rem;
+    }
+
+    .newsletter-row {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .button {
+      width: 100%;
+    }
+  }
+</style>
