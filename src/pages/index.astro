@@ -1,5 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const normalizedPath = path.replace(/^\//, '');
+  return `${base}/${normalizedPath}`;
+};
 ---
 
 <Layout
@@ -41,20 +47,36 @@ import Layout from '../layouts/Layout.astro';
         <h2>Southern Maryland: Our Shared Place</h2>
         <div class="place-grid">
           <article class="surface card">
-            <h3>Geography & Geology</h3>
+            <h3>Watershed & Geography</h3>
             <p>
               Our community sits where the Patuxent River meets the greater Chesapeake Bay watershed,
               near Lusby and the dramatic Calvert Cliffs. These Miocene-era formations hold millions of
               years of coastal history in layered sands, clays, and marine fossils.
             </p>
+            <figure class="place-image">
+              <img
+                src={withBase('/images/watershed-geography.webp')}
+                alt="Illustration of river channels flowing to the Chesapeake Bay near coastal cliffs"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
           </article>
           <article class="surface card">
-            <h3>Flora & Fauna</h3>
+            <h3>Ecology</h3>
             <p>
               Coastal oak-pine forests, mountain laurel, and marsh edges shape this landscape. Bald
               eagles soar above creeks and coves, while fish, crabs, and other marine life sustain the
               estuary’s living web.
             </p>
+            <figure class="place-image">
+              <img
+                src={withBase('/images/ecology.webp')}
+                alt="Illustration of coastal forest and estuary wildlife habitat"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
           </article>
           <article class="surface card">
             <h3>Indigenous Heritage</h3>
@@ -63,6 +85,14 @@ import Layout from '../layouts/Layout.astro';
               and related Chesapeake region lineages, while acknowledging and uplifting existing tribal
               communities today.
             </p>
+            <figure class="place-image">
+              <img
+                src={withBase('/images/indigenous-heritage.webp')}
+                alt="Symbolic landscape illustration honoring Indigenous presence and relationship with land"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
           </article>
         </div>
       </div>
@@ -126,7 +156,17 @@ import Layout from '../layouts/Layout.astro';
     <div class="container footer-wrap">
       <p>© {new Date().getFullYear()} Nature & Nurture.</p>
       <p>Lusby & the Southern Maryland coast, rooted in the Chesapeake watershed.</p>
-      <p>Proudly part of the nationwide Spirituality in Nature Group (SING) movement.</p>
+      <p>
+        Proudly part of the nationwide
+        <a
+          href="https://www.centerforspiritualityinnature.org/spirituality-in-nature-groups"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Spirituality in Nature Group (SING)
+        </a>
+        movement.
+      </p>
     </div>
   </footer>
 
@@ -237,6 +277,20 @@ import Layout from '../layouts/Layout.astro';
 
   .card {
     padding: 1.2rem;
+  }
+
+  .place-image {
+    margin: 1rem 0 0;
+  }
+
+  .place-image img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 0.65rem;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
+    background: color-mix(in oklab, var(--color-bg-alt) 75%, white);
   }
 
   .gatherings {
