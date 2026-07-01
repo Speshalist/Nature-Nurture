@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Watershed and Geography</title>
+  <desc id="desc">Stylized river watershed flowing toward bay waters under layered cliffs.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d9f0ff"/>
+      <stop offset="100%" stop-color="#f6fbff"/>
+    </linearGradient>
+    <linearGradient id="land" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d2c2a2"/>
+      <stop offset="100%" stop-color="#b79e7c"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#6ba6c5"/>
+      <stop offset="100%" stop-color="#4e87a8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#sky)"/>
+  <path d="M0 360 C220 320 360 390 530 350 C760 300 905 390 1200 330 L1200 750 L0 750 Z" fill="url(#land)"/>
+  <path d="M0 470 C170 430 320 505 520 470 C730 435 940 530 1200 495 L1200 750 L0 750 Z" fill="#8fa779" opacity="0.35"/>
+  <path d="M0 600 C200 560 360 650 560 610 C760 570 970 680 1200 635 L1200 750 L0 750 Z" fill="url(#water)"/>
+  <path d="M240 120 C350 180 470 210 560 260 C650 310 710 370 730 420" stroke="#5d8aa3" stroke-width="20" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <path d="M620 90 C690 145 760 180 830 230 C900 280 965 345 1000 405" stroke="#5d8aa3" stroke-width="16" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="180" cy="140" r="58" fill="#ffe8a6"/>
+</svg>

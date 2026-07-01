@@ -9,19 +9,20 @@ const withBase = (path: string) => {
 ---
 
 <Layout
-  title="Nature & Nurture | Southern Maryland SING"
-  description="Nature & Nurture is a Southern Maryland Spirituality in Nature Group (SING) rooted in the Chesapeake Bay watershed and Calvert Cliffs region."
+  title="Nature & Nurture: Southern Maryland"
+  description="Nature & Nurture: Southern Maryland is a Spirituality in Nature Group (SING) located in Calvert County, MD.  A peninsula of land where the Patuxent River joins the Chesapeake Bay."
 >
   <header class="site-header">
     <div class="container nav-wrap">
       <div>
-        <p class="eyebrow">Nature & Nurture</p>
+        <p class="eyebrow">Nature & Nurture: Southern Maryland</p>
         <p class="tagline">A Spirituality in Nature Group (SING)</p>
       </div>
       <nav aria-label="Primary navigation">
         <ul class="nav-list">
           <li><a href="#welcome">Welcome</a></li>
-          <li><a href="#about-place">About the Place</a></li>
+            <li><a href="#about">About</a></li>
+          <li><a href="#about-place">Our Shared Place</a></li>
           <li><a href="#gatherings">Gatherings</a></li>
           <li><a href="#connect">Connect</a></li>
         </ul>
@@ -32,13 +33,40 @@ const withBase = (path: string) => {
   <main id="main-content">
     <section id="welcome" class="section hero">
       <div class="container">
-        <div class="surface hero-card">
-          <h1>Welcome to Nature & Nurture</h1>
+        <article class="surface hero-card hero-inline">
+          <h1>Welcome to Nature & Nurture: Southern Maryland</h1>
           <p>
             We gather to reconnect with the sacred through sky, shoreline, forest, and one another —
             honoring wonder, reflection, and belonging in the natural world.
           </p>
-        </div>
+          <figure class="hero-image">
+            <img
+              src={withBase('/images/naturemandala.jpg')}
+              alt="Nature mandala arranged with flowers, leaves, and natural materials"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About Nature &amp; Nurture: Southern Maryland</h2>
+        <article class="surface card about-card">
+          <p>
+            Nature &amp; Nurture: Southern Maryland is a welcoming Spirituality in Nature Group where people gather to
+            slow down, notice the land, and share time in community. Our circle is rooted in a sense
+            of reverence for the earth, curiosity about place, and simple practices that help us pay
+            attention together.
+          </p>
+          <p>
+            This space is ready for your fuller about copy when you have it. You can use it to share
+            your mission, who the group is for, how gatherings work, or any details you want new
+            visitors to understand first.
+          </p>
+        </article>
       </div>
     </section>
 
@@ -101,16 +129,36 @@ const withBase = (path: string) => {
     <section id="gatherings" class="section gatherings">
       <div class="container">
         <h2>Gatherings & Calendar</h2>
-        <div class="surface iframe-card">
+        <article class="surface card gathering-details">
+          <h3>Our Gatherings</h3>
           <p>
-            Upcoming gatherings will appear below. Replace this iframe source with your Google Calendar
-            embed URL or local schedule feed.
+            Our gatherings open with a warm welcome and a calling of the Seven Directions, grounding us
+            in a sacred circle where we reflect on the day&apos;s theme and learn about the local history and
+            ecology of the land. After a centering practice and an inspirational reading, we transition
+            into a blend of quiet solo time and a shared community activity designed to deepen our bond
+            with the earth. We conclude each gathering by inviting personal reflections on our experiences
+            and closing with shared gratitude for ourselves, one another, and the natural world.
           </p>
+          <figure class="gathering-image">
+            <img
+              src={withBase('/images/naturemandala.webp')}
+              alt="Nature mandala arranged with flowers, leaves, and natural materials"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        </article>
+        <div class="surface iframe-card">
+          <p>Upcoming gatherings are listed below in agenda view.</p>
           <iframe
-            title="Nature & Nurture Calendar Placeholder"
-            src="about:blank"
+            class="calendar-embed"
+            title="Nature & Nurture: Southern Maryland Gatherings Calendar"
+            src="https://calendar.google.com/calendar/embed?src=748db8a7c2883d804e9257ebc7c994a01aee3781f451a68ab43d385228ac918d%40group.calendar.google.com&ctz=America%2FNew_York&mode=AGENDA&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0"
             loading="lazy"
             referrerpolicy="no-referrer"
+            frameborder="0"
+            scrolling="no"
+            style="border: 0"
           ></iframe>
         </div>
       </div>
@@ -118,18 +166,20 @@ const withBase = (path: string) => {
 
     <section id="connect" class="section">
       <div class="container">
-        <h2>Community Engagement</h2>
+        <h2>Connect With Us</h2>
         <div class="forms-grid">
           <article class="surface card">
-            <h3>Send us a Message</h3>
+            <h3>Send Us a Message</h3>
             <form id="contact-form" novalidate>
-              <label for="name">Name</label>
+              <p class="form-note">All fields are required.</p>
+
+              <label for="name">Name *</label>
               <input id="name" name="name" type="text" required />
 
-              <label for="email">Email</label>
+              <label for="email">Email *</label>
               <input id="email" name="email" type="email" required />
 
-              <label for="message">Message</label>
+              <label for="message">Message *</label>
               <textarea id="message" name="message" rows="5" required></textarea>
 
               <button class="button" type="submit">Send Message</button>
@@ -140,11 +190,39 @@ const withBase = (path: string) => {
           <article class="surface card">
             <h3>Newsletter Sign-up</h3>
             <form class="newsletter-form" action="#" method="post">
-              <label for="newsletter-email">Email Address</label>
-              <div class="newsletter-row">
-                <input id="newsletter-email" name="newsletter-email" type="email" required />
-                <button class="button" type="submit">Subscribe</button>
-              </div>
+              <p class="form-note">Required fields are marked with *</p>
+
+              <label for="newsletter-first-name">First Name *</label>
+              <input
+                id="newsletter-first-name"
+                name="newsletter-first-name"
+                type="text"
+                required
+                autocomplete="given-name"
+              />
+
+              <label for="newsletter-last-name">Last Name *</label>
+              <input
+                id="newsletter-last-name"
+                name="newsletter-last-name"
+                type="text"
+                required
+                autocomplete="family-name"
+              />
+
+              <label for="newsletter-email">Email Address *</label>
+              <input
+                id="newsletter-email"
+                name="newsletter-email"
+                type="email"
+                required
+                autocomplete="email"
+              />
+
+              <label for="newsletter-phone">Phone Number</label>
+              <input id="newsletter-phone" name="newsletter-phone" type="tel" autocomplete="tel" />
+
+              <button class="button newsletter-button" type="submit">Subscribe</button>
             </form>
           </article>
         </div>
@@ -154,10 +232,10 @@ const withBase = (path: string) => {
 
   <footer class="site-footer">
     <div class="container footer-wrap">
-      <p>© {new Date().getFullYear()} Nature & Nurture.</p>
-      <p>Lusby & the Southern Maryland coast, rooted in the Chesapeake watershed.</p>
+      <p>© {new Date().getFullYear()} Nature & Nurture: Southern Maryland.</p>
       <p>
-        Proudly part of the nationwide
+        A
+        {' '}
         <a
           href="https://www.centerforspiritualityinnature.org/spirituality-in-nature-groups"
           target="_blank"
@@ -165,7 +243,7 @@ const withBase = (path: string) => {
         >
           Spirituality in Nature Group (SING)
         </a>
-        movement.
+        {' '}in Southern Maryland.
       </p>
     </div>
   </footer>
@@ -262,8 +340,27 @@ const withBase = (path: string) => {
     border-left: 6px solid var(--color-accent);
   }
 
+  .section {
+    scroll-margin-top: 4.5rem;
+  }
+
+  .hero-image {
+    margin: 1rem 0 0;
+  }
+
+  .hero-image img {
+    display: block;
+    width: 100%;
+    height: clamp(170px, 22vw, 230px);
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.65rem;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
+    background: color-mix(in oklab, var(--color-bg-alt) 75%, white);
+  }
+
   .hero-card p {
-    max-width: 62ch;
+    max-width: none;
     margin-bottom: 0;
   }
 
@@ -277,6 +374,23 @@ const withBase = (path: string) => {
 
   .card {
     padding: 1.2rem;
+  }
+
+  .about-card {
+    width: 100%;
+    border-left: 6px solid var(--color-accent);
+  }
+
+  .about-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .place-grid .card {
+    border-left: 6px solid var(--color-primary);
+  }
+
+  .forms-grid .card {
+    border-left: 6px solid var(--color-primary);
   }
 
   .place-image {
@@ -301,9 +415,29 @@ const withBase = (path: string) => {
     padding: 1.2rem;
   }
 
-  iframe {
+  .gathering-details {
+    margin-bottom: 1rem;
+    border-left: 6px solid var(--color-accent);
+  }
+
+  .gathering-image {
+    margin: 1rem 0 0;
+  }
+
+  .gathering-image img {
+    display: block;
+    width: min(100%, 560px);
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0.65rem;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
+    background: color-mix(in oklab, var(--color-bg-alt) 75%, white);
+  }
+
+  .calendar-embed {
     width: 100%;
-    min-height: 340px;
+    height: clamp(360px, 68vh, 760px);
     border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
     border-radius: 0.6rem;
     background: var(--color-surface);
@@ -351,6 +485,20 @@ const withBase = (path: string) => {
     flex-wrap: wrap;
   }
 
+  .newsletter-form {
+    margin-top: 0.4rem;
+  }
+
+  .form-note {
+    margin: 0 0 0.15rem;
+    font-size: 0.95rem;
+    color: color-mix(in oklab, var(--color-text) 72%, var(--color-primary));
+  }
+
+  .newsletter-button {
+    margin-top: 0.35rem;
+  }
+
   .site-footer {
     border-top: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
     background: color-mix(in oklab, var(--color-bg) 78%, white);
@@ -369,7 +517,7 @@ const withBase = (path: string) => {
 
   @media (max-width: 640px) {
     .section {
-      padding: 3rem 0;
+      padding: 1.5rem 0;
     }
 
     .eyebrow {
@@ -380,13 +528,16 @@ const withBase = (path: string) => {
       gap: 0.4rem;
     }
 
-    .newsletter-row {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-
     .button {
       width: 100%;
+    }
+
+    .newsletter-button {
+      width: 100%;
+    }
+
+    .calendar-embed {
+      height: clamp(320px, 62vh, 620px);
     }
   }
 </style>

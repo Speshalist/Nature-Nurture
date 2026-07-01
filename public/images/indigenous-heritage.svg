@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Indigenous Heritage</title>
+  <desc id="desc">Symbolic landscape with circular motif honoring enduring relationship between people, land, and water.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f4e8cf"/>
+      <stop offset="100%" stop-color="#e6d6b6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#bg)"/>
+  <path d="M0 470 C220 430 380 510 590 470 C810 430 980 525 1200 490 L1200 750 L0 750 Z" fill="#8aa07a"/>
+  <path d="M0 560 C210 530 380 595 590 560 C810 525 980 610 1200 575 L1200 750 L0 750 Z" fill="#5a8ba5"/>
+
+  <g transform="translate(600 300)">
+    <circle r="160" fill="none" stroke="#9f5f2f" stroke-width="16"/>
+    <circle r="118" fill="none" stroke="#cf8e52" stroke-width="12" stroke-dasharray="16 10"/>
+    <circle r="78" fill="none" stroke="#7b3f1e" stroke-width="10"/>
+    <path d="M0 -170 L0 170 M-170 0 L170 0" stroke="#7b3f1e" stroke-width="8" opacity="0.85"/>
+    <path d="M-120 -120 L120 120 M120 -120 L-120 120" stroke="#9f5f2f" stroke-width="6" opacity="0.75"/>
+  </g>
+
+  <g fill="#6f4a2f">
+    <circle cx="190" cy="215" r="12"/>
+    <circle cx="240" cy="250" r="10"/>
+    <circle cx="1010" cy="230" r="12"/>
+    <circle cx="965" cy="270" r="10"/>
+  </g>
+</svg>
