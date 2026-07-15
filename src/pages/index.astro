@@ -14,9 +14,18 @@ const withBase = (path: string) => {
 >
   <header class="site-header">
     <div class="container nav-wrap">
-      <div>
-        <p class="eyebrow">Nature & Nurture: Southern Maryland</p>
-        <p class="tagline">A Spirituality in Nature Group (SING)</p>
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src={withBase('/images/NatureNurtureLogo_imageonly.png')}
+          alt="Nature & Nurture: Southern Maryland logo"
+          loading="eager"
+          decoding="async"
+        />
+        <div>
+          <p class="eyebrow">Nature & Nurture: Southern Maryland</p>
+          <p class="tagline">A Spirituality in Nature Group (SING)</p>
+        </div>
       </div>
       <nav aria-label="Primary navigation">
         <ul class="nav-list">
@@ -298,8 +307,20 @@ const withBase = (path: string) => {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding: 0.85rem 0;
+    padding: 0.75rem 0 0.4rem;
     flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand-logo {
+    width: clamp(68px, 10vw, 104px);
+    height: auto;
+    display: block;
   }
 
   .eyebrow {
