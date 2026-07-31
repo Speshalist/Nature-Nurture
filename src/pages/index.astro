@@ -6,6 +6,8 @@ const withBase = (path: string) => {
   const normalizedPath = path.replace(/^\//, '');
   return `${base}/${normalizedPath}`;
 };
+
+const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
 ---
 
 <Layout
@@ -65,15 +67,21 @@ const withBase = (path: string) => {
         <h2>About Nature &amp; Nurture: Southern Maryland</h2>
         <article class="surface card about-card">
           <p>
-            Nature &amp; Nurture: Southern Maryland is a welcoming Spirituality in Nature Group where people gather to
-            slow down, notice the land, and share time in community. Our circle is rooted in a sense
-            of reverence for the earth, curiosity about place, and simple practices that help us pay
-            attention together.
+            Nature &amp; Nurture: Southern Maryland is a welcoming
+            {' '}
+            <a
+              href="https://www.centerforspiritualityinnature.org/spirituality-in-nature-groups"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Spirituality in Nature Group
+            </a>
+            {' '}.
+            We share time and experiences in community connecting with each other and the natural place where we are gathered. We express our curiosity, creativity and reverence
+            for the natural world and first peoples through shared conversation and practices/ceremonies.
           </p>
           <p>
-            This space is ready for your fuller about copy when you have it. You can use it to share
-            your mission, who the group is for, how gatherings work, or any details you want new
-            visitors to understand first.
+            Belonging together, as members of the Earth and the cosmos, we invite everyone regardless of belief.
           </p>
         </article>
       </div>
@@ -141,12 +149,13 @@ const withBase = (path: string) => {
         <article class="surface card gathering-details">
           <h3>Our Gatherings</h3>
           <p>
-            Our gatherings open with a warm welcome and a calling of the Seven Directions, grounding us
-            in a sacred circle where we reflect on the day&apos;s theme and learn about the local history and
-            ecology of the land. After a centering practice and an inspirational reading, we transition
-            into a blend of quiet solo time and a shared community activity designed to deepen our bond
-            with the earth. We conclude each gathering by inviting personal reflections on our experiences
-            and closing with shared gratitude for ourselves, one another, and the natural world.
+            Our gatherings begin with a warm welcome and a Seven Directions prayer.  In a circle together we 
+            share and reflect on a theme, learn about and pay respect to the first peoples and ecology of the land. 
+            We share a centering practice and an inspirational reading, and then a combination of quiet solo time 
+            followed by a shared community activity or ceremony with the intention of cultivating our awareness of 
+            this wondrous life-giving planet and honoring our active, reciprocal place within this living community.  
+            We close by sharing reflections on the practices we have shared, followed by expressing gratitude for 
+            ourselves, each other, and our world. 
           </p>
           <figure class="gathering-image">
             <img
@@ -179,8 +188,12 @@ const withBase = (path: string) => {
         <div class="forms-grid">
           <article class="surface card">
             <h3>Send Us a Message</h3>
-            <form id="contact-form" novalidate>
+            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
               <p class="form-note">All fields are required.</p>
+
+              <input type="hidden" name="access_key" value={web3FormsAccessKey} />
+              <input type="hidden" name="subject" value="Message from Nature & Nurture contact form" />
+              <input type="checkbox" name="botcheck" class="hidden-field" tabindex="-1" autocomplete="off" />
 
               <label for="name">Name *</label>
               <input id="name" name="name" type="text" required />
@@ -262,7 +275,7 @@ const withBase = (path: string) => {
     const status = document.querySelector('#form-status');
 
     if (form instanceof HTMLFormElement && status instanceof HTMLElement) {
-      form.addEventListener('submit', (event) => {
+      form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         if (!form.checkValidity()) {
@@ -272,21 +285,50 @@ const withBase = (path: string) => {
           return;
         }
 
+        const accessKey = form.querySelector('input[name="access_key"]');
+        if (!(accessKey instanceof HTMLInputElement) || !accessKey.value.trim()) {
+          status.textContent = 'Contact form is not configured yet. Please add your Web3Forms access key.';
+          status.dataset.state = 'error';
+          return;
+        }
+
         const button = form.querySelector('button[type="submit"]');
         if (button instanceof HTMLButtonElement) {
           button.disabled = true;
           button.textContent = 'Sending...';
         }
 
-        status.textContent = 'Thanks for reaching out. Your message is ready to be sent.';
-        status.dataset.state = 'success';
+        status.textContent = 'Sending your message...';
+        status.dataset.state = '';
 
-        window.setTimeout(() => {
+        try {
+          const formData = new FormData(form);
+          const response = await fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+              Accept: 'application/json'
+            }
+          });
+
+          const result = await response.json();
+          if (response.ok && result.success) {
+            status.textContent = 'Thanks for reaching out. Your message was sent successfully.';
+            status.dataset.state = 'success';
+            form.reset();
+          } else {
+            status.textContent = result.message || 'We could not send your message. Please try again.';
+            status.dataset.state = 'error';
+          }
+        } catch {
+          status.textContent = 'We could not send your message. Please try again in a moment.';
+          status.dataset.state = 'error';
+        } finally {
           if (button instanceof HTMLButtonElement) {
             button.disabled = false;
             button.textContent = 'Send Message';
           }
-        }, 700);
+        }
       });
     }
   </script>
@@ -489,6 +531,10 @@ const withBase = (path: string) => {
     min-height: 1.2em;
     margin: 0;
     font-size: 0.95rem;
+  }
+
+  .hidden-field {
+    display: none;
   }
 
   #form-status[data-state='error'] {
