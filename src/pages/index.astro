@@ -8,6 +8,7 @@ const withBase = (path: string) => {
 };
 
 const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL ?? '';
 ---
 
 <Layout
@@ -211,13 +212,27 @@ const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
 
           <article class="surface card">
             <h3>Newsletter Sign-up</h3>
-            <form class="newsletter-form" action="#" method="post">
+            <form
+              class="newsletter-form"
+              action={mailchimpFormActionUrl || '#'}
+              method="post"
+              target="_blank"
+            >
               <p class="form-note">Required fields are marked with *</p>
+
+              <label for="newsletter-email">Email Address *</label>
+              <input
+                id="newsletter-email"
+                name="EMAIL"
+                type="email"
+                required
+                autocomplete="email"
+              />
 
               <label for="newsletter-first-name">First Name *</label>
               <input
                 id="newsletter-first-name"
-                name="newsletter-first-name"
+                name="FNAME"
                 type="text"
                 required
                 autocomplete="given-name"
@@ -226,25 +241,63 @@ const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
               <label for="newsletter-last-name">Last Name *</label>
               <input
                 id="newsletter-last-name"
-                name="newsletter-last-name"
+                name="LNAME"
                 type="text"
                 required
                 autocomplete="family-name"
               />
 
-              <label for="newsletter-email">Email Address *</label>
-              <input
-                id="newsletter-email"
-                name="newsletter-email"
-                type="email"
-                required
-                autocomplete="email"
-              />
+              <label for="newsletter-phone-area">Phone Number</label>
+              <div class="newsletter-row phone-group">
+                <input
+                  id="newsletter-phone-area"
+                  name="MMERGE4[area]"
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  maxlength="3"
+                  aria-label="Area code"
+                  autocomplete="tel-area-code"
+                />
+                <span aria-hidden="true">-</span>
+                <input
+                  name="MMERGE4[detail1]"
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  maxlength="3"
+                  aria-label="First three digits"
+                  autocomplete="tel-local-prefix"
+                />
+                <span aria-hidden="true">-</span>
+                <input
+                  name="MMERGE4[detail2]"
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  maxlength="4"
+                  aria-label="Last four digits"
+                  autocomplete="tel-local-suffix"
+                />
+              </div>
 
-              <label for="newsletter-phone">Phone Number</label>
-              <input id="newsletter-phone" name="newsletter-phone" type="tel" autocomplete="tel" />
+              <label for="newsletter-heard-about">How did you hear about us?</label>
+              <input id="newsletter-heard-about" name="MMERGE3" type="text" />
+
+              <input type="hidden" name="group[345897][2]" value="2" />
+              <input type="hidden" name="tags" value="8332956" />
+              <!-- Anti-bot honeypot field required by Mailchimp; keep hidden and empty -->
+              <div aria-hidden="true" class="hidden-field">
+                <input
+                  type="text"
+                  name="b_935204b0cdffb4404540c7b99_63ff9aaaf7"
+                  tabindex="-1"
+                  autocomplete="off"
+                />
+              </div>
 
               <button class="button newsletter-button" type="submit">Subscribe</button>
+              <p id="newsletter-status" role="status" aria-live="polite"></p>
             </form>
           </article>
         </div>
@@ -329,6 +382,24 @@ const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
             button.textContent = 'Send Message';
           }
         }
+      });
+    }
+
+    const newsletterForm = document.querySelector('.newsletter-form');
+    const newsletterStatus = document.querySelector('#newsletter-status');
+
+    if (newsletterForm instanceof HTMLFormElement && newsletterStatus instanceof HTMLElement) {
+      newsletterForm.addEventListener('submit', (event) => {
+        const action = newsletterForm.getAttribute('action');
+        if (!action || action === '#' || !action.startsWith('http')) {
+          event.preventDefault();
+          newsletterStatus.textContent = 'Newsletter signup is not configured yet. Add your Mailchimp form action URL.';
+          newsletterStatus.dataset.state = 'error';
+          return;
+        }
+
+        newsletterStatus.textContent = 'Redirecting you to Mailchimp to complete your subscription.';
+        newsletterStatus.dataset.state = 'success';
       });
     }
   </script>
@@ -527,7 +598,8 @@ const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
     outline-offset: 1px;
   }
 
-  #form-status {
+  #form-status,
+  #newsletter-status {
     min-height: 1.2em;
     margin: 0;
     font-size: 0.95rem;
@@ -537,11 +609,13 @@ const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
     display: none;
   }
 
-  #form-status[data-state='error'] {
+  #form-status[data-state='error'],
+  #newsletter-status[data-state='error'] {
     color: #8b2f2f;
   }
 
-  #form-status[data-state='success'] {
+  #form-status[data-state='success'],
+  #newsletter-status[data-state='success'] {
     color: var(--color-primary);
   }
 
@@ -550,6 +624,11 @@ const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
     gap: 0.65rem;
     align-items: center;
     flex-wrap: wrap;
+  }
+
+  .phone-group input {
+    width: 4.5rem;
+    text-align: center;
   }
 
   .newsletter-form {
