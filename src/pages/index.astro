@@ -8,7 +8,6 @@ const withBase = (path: string) => {
 };
 
 const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
-const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL ?? '';
 ---
 
 <Layout
@@ -53,10 +52,13 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
           </p>
           <figure class="hero-image">
             <img
-              src={withBase('/images/naturemandala.jpg')}
+              src={withBase('/images/naturemandala.webp')}
               alt="Nature mandala arranged with flowers, leaves, and natural materials"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
               decoding="async"
+              width="1600"
+              height="1292"
             />
           </figure>
         </article>
@@ -164,6 +166,8 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
               alt="Nature mandala arranged with flowers, leaves, and natural materials"
               loading="lazy"
               decoding="async"
+              width="1200"
+              height="900"
             />
           </figure>
         </article>
@@ -212,93 +216,13 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
 
           <article class="surface card">
             <h3>Newsletter Sign-up</h3>
-            <form
-              class="newsletter-form"
-              action={mailchimpFormActionUrl || '#'}
-              method="post"
-              target="_blank"
-            >
-              <p class="form-note">Required fields are marked with *</p>
-
-              <label for="newsletter-email">Email Address *</label>
-              <input
-                id="newsletter-email"
-                name="EMAIL"
-                type="email"
-                required
-                autocomplete="email"
-              />
-
-              <label for="newsletter-first-name">First Name *</label>
-              <input
-                id="newsletter-first-name"
-                name="FNAME"
-                type="text"
-                required
-                autocomplete="given-name"
-              />
-
-              <label for="newsletter-last-name">Last Name *</label>
-              <input
-                id="newsletter-last-name"
-                name="LNAME"
-                type="text"
-                required
-                autocomplete="family-name"
-              />
-
-              <label for="newsletter-phone-area">Phone Number</label>
-              <div class="newsletter-row phone-group">
-                <input
-                  id="newsletter-phone-area"
-                  name="MMERGE4[area]"
-                  type="text"
-                  inputmode="numeric"
-                  pattern="[0-9]*"
-                  maxlength="3"
-                  aria-label="Area code"
-                  autocomplete="tel-area-code"
-                />
-                <span aria-hidden="true">-</span>
-                <input
-                  name="MMERGE4[detail1]"
-                  type="text"
-                  inputmode="numeric"
-                  pattern="[0-9]*"
-                  maxlength="3"
-                  aria-label="First three digits"
-                  autocomplete="tel-local-prefix"
-                />
-                <span aria-hidden="true">-</span>
-                <input
-                  name="MMERGE4[detail2]"
-                  type="text"
-                  inputmode="numeric"
-                  pattern="[0-9]*"
-                  maxlength="4"
-                  aria-label="Last four digits"
-                  autocomplete="tel-local-suffix"
-                />
-              </div>
-
-              <label for="newsletter-heard-about">How did you hear about us?</label>
-              <input id="newsletter-heard-about" name="MMERGE3" type="text" />
-
-              <input type="hidden" name="group[345897][2]" value="2" />
-              <input type="hidden" name="tags" value="8332956" />
-              <!-- Anti-bot honeypot field required by Mailchimp; keep hidden and empty -->
-              <div aria-hidden="true" class="hidden-field">
-                <input
-                  type="text"
-                  name="b_935204b0cdffb4404540c7b99_63ff9aaaf7"
-                  tabindex="-1"
-                  autocomplete="off"
-                />
-              </div>
-
-              <button class="button newsletter-button" type="submit">Subscribe</button>
-              <p id="newsletter-status" role="status" aria-live="polite"></p>
-            </form>
+            <p class="form-note">
+              We use double opt-in, so after subscribing check your inbox for a confirmation email to complete
+              your sign-up.
+            </p>
+            <div class="newsletter-embed">
+              <script async src="https://eomail5.com/form/859ac880-9293-11f1-bc51-6fc09e9095d8.js" data-form="859ac880-9293-11f1-bc51-6fc09e9095d8"></script>
+            </div>
           </article>
         </div>
       </div>
@@ -384,23 +308,28 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
         }
       });
     }
+  </script>
 
-    const newsletterForm = document.querySelector('.newsletter-form');
-    const newsletterStatus = document.querySelector('#newsletter-status');
+  <script>
+    // Email Octopus injects the form/message markup asynchronously, so watch for the success text to appear.
+    const newsletterEmbed = document.querySelector('.newsletter-embed');
 
-    if (newsletterForm instanceof HTMLFormElement && newsletterStatus instanceof HTMLElement) {
-      newsletterForm.addEventListener('submit', (event) => {
-        const action = newsletterForm.getAttribute('action');
-        if (!action || action === '#' || !action.startsWith('http')) {
-          event.preventDefault();
-          newsletterStatus.textContent = 'Newsletter signup is not configured yet. Add your Mailchimp form action URL.';
-          newsletterStatus.dataset.state = 'error';
-          return;
+    if (newsletterEmbed instanceof HTMLElement) {
+      const observer = new MutationObserver(() => {
+        const successMessage = newsletterEmbed.querySelector('.emailoctopus-success-message');
+        const newsletterForm = newsletterEmbed.querySelector('form');
+        const submitButton = newsletterForm?.querySelector('input[type="submit"]');
+
+        if (successMessage?.textContent?.trim() && newsletterForm instanceof HTMLFormElement) {
+          newsletterForm.reset();
+
+          if (submitButton instanceof HTMLInputElement) {
+            submitButton.disabled = false;
+          }
         }
-
-        newsletterStatus.textContent = 'Redirecting you to Mailchimp to complete your subscription.';
-        newsletterStatus.dataset.state = 'success';
       });
+
+      observer.observe(newsletterEmbed, { childList: true, subtree: true, characterData: true });
     }
   </script>
 </Layout>
@@ -560,9 +489,10 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
 
   .gathering-image img {
     display: block;
-    width: min(100%, 560px);
+    width: min(100%, 684px);
+    height: auto;
     margin: 0 auto;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
     object-fit: cover;
     border-radius: 0.65rem;
     border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
@@ -598,8 +528,7 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
     outline-offset: 1px;
   }
 
-  #form-status,
-  #newsletter-status {
+  #form-status {
     min-height: 1.2em;
     margin: 0;
     font-size: 0.95rem;
@@ -609,30 +538,12 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
     display: none;
   }
 
-  #form-status[data-state='error'],
-  #newsletter-status[data-state='error'] {
+  #form-status[data-state='error'] {
     color: #8b2f2f;
   }
 
-  #form-status[data-state='success'],
-  #newsletter-status[data-state='success'] {
+  #form-status[data-state='success'] {
     color: var(--color-primary);
-  }
-
-  .newsletter-row {
-    display: flex;
-    gap: 0.65rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .phone-group input {
-    width: 4.5rem;
-    text-align: center;
-  }
-
-  .newsletter-form {
-    margin-top: 0.4rem;
   }
 
   .form-note {
@@ -641,9 +552,89 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
     color: color-mix(in oklab, var(--color-text) 72%, var(--color-primary));
   }
 
-  .newsletter-button {
-    margin-top: 0.35rem;
+  .newsletter-embed {
+    margin-top: 0.4rem;
   }
+
+  /* Email Octopus injects its own markup at runtime, so these rules target it via :global() and !important. */
+  .newsletter-embed :global(.emailoctopus-form-wrapper) {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .newsletter-embed :global(.emailoctopus-form-wrapper > form) {
+    order: 1 !important;
+  }
+
+  .newsletter-embed :global(form) {
+    display: grid !important;
+    gap: 0.55rem !important;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  }
+
+  .newsletter-embed :global(label) {
+    color: var(--color-text) !important;
+    font-weight: 500 !important;
+  }
+
+  .newsletter-embed :global(.emailoctopus-success-message),
+  .newsletter-embed :global(.emailoctopus-error-message) {
+    order: 2 !important;
+    margin: 0.5rem 0 0 !important;
+    text-align: center !important;
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+    color: #8b2f2f !important;
+  }
+
+  .newsletter-embed :global(.emailoctopus-success-message:empty),
+  .newsletter-embed :global(.emailoctopus-error-message:empty) {
+    display: none !important;
+  }
+
+  .newsletter-embed :global(.emailoctopus-form-row-hp) {
+    display: none !important;
+  }
+
+  .newsletter-embed :global(input),
+  .newsletter-embed :global(select),
+  .newsletter-embed :global(textarea) {
+    width: 100% !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 24%, white) !important;
+    padding: 0.65rem 0.75rem !important;
+    font: inherit !important;
+    background: #fff !important;
+    box-sizing: border-box !important;
+  }
+
+  .newsletter-embed :global(input:focus),
+  .newsletter-embed :global(select:focus),
+  .newsletter-embed :global(textarea:focus) {
+    outline: 2px solid color-mix(in oklab, var(--color-accent) 75%, white) !important;
+    outline-offset: 1px !important;
+  }
+
+  .newsletter-embed :global(button),
+  .newsletter-embed :global(input[type='submit']) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    border-radius: 999px !important;
+    font: inherit !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    padding: 0.65rem 1.1rem !important;
+    background: var(--color-primary) !important;
+    color: #fff !important;
+  }
+
+  .newsletter-embed :global(button:hover),
+  .newsletter-embed :global(input[type='submit']:hover) {
+    background: color-mix(in oklab, var(--color-primary) 86%, black) !important;
+  }
+
 
   .site-footer {
     border-top: 1px solid color-mix(in oklab, var(--color-primary) 18%, white);
@@ -675,10 +666,6 @@ const mailchimpFormActionUrl = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION_URL 
     }
 
     .button {
-      width: 100%;
-    }
-
-    .newsletter-button {
       width: 100%;
     }
 
